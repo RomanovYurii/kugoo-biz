@@ -6,14 +6,14 @@ const
         <View style={{width: 30, height: 2, backgroundColor: '#fff'}}/>
     ),
     Hamburger = () => (
-        <TouchableOpacity style={{
+        <View style={{
             height: 25,
             justifyContent: 'space-between'
         }}>
             <Line/>
             <Line/>
             <Line/>
-        </TouchableOpacity>
+        </View>
     )
 ;
 

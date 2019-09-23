@@ -1,86 +1,139 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text, Image} from 'react-native';
-import {deviceHeight, deviceWidth} from './constants'
+import {View, TouchableOpacity, Text, Image, AsyncStorage} from 'react-native';
+import {Actions} from 'react-native-router-flux';
+import {deviceHeight, deviceWidth} from './constants';
 
-class Drawer extends Component {
-    render() {
-        return (
-            <View style={{
-                position: 'absolute',
-                left: 0,
-                top: 80,
-                zIndex: 1,
-                width: deviceWidth,
-                height: deviceHeight - 80,
-                flexDirection: 'row',
-                justifyContent: 'flex-start'
+const Drawer = ({display, toggle, auth}) => (
+    <View style={{
+        position: 'absolute',
+        left: 0,
+        top: 80,
+        zIndex: 1,
+        width: deviceWidth,
+        height: deviceHeight - 80,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        display
+    }}>
+        <View style={{
+            height: deviceHeight - 80,
+            width: deviceWidth * 0.6,
+            backgroundColor: '#fff',
+            paddingLeft: 30,
+            paddingTop: 15,
+            alignItems: 'flex-start'
+        }}>
+            {
+                auth && (
+                    <TouchableOpacity style={{
+                        paddingVertical: 15,
+                        paddingBottom: 45
+                    }} onPress={() => {
+                        toggle();
+                        Actions.replace('adminPanel');
+                    }}>
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }}>
+                            Admin panel
+                        </Text>
+                    </TouchableOpacity>
+                )
+            }
+
+            <TouchableOpacity style={{
+                paddingVertical: 15
+            }} onPress={() => {
+                toggle();
+                Actions.replace('home');
             }}>
-                <View style={{
-                    height: deviceHeight - 80,
-                    width: deviceWidth * 0.6,
-                    backgroundColor: '#fff',
-                    paddingLeft: 30,
-                    paddingTop: 15,
-                    alignItems: 'flex-start'
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold'
                 }}>
-                    <TouchableOpacity style={{
-                        paddingVertical: 15
-                    }}>
-                        <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold'
-                        }}>
-                            Warranty
-                        </Text>
-                    </TouchableOpacity>
+                    Catalogue
+                </Text>
+            </TouchableOpacity>
 
-                    <TouchableOpacity style={{
-                        paddingVertical: 15
-                    }}>
-                        <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold'
-                        }}>
-                            Delivery
-                        </Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={{
+                paddingVertical: 15
+            }} onPress={() => {
+                toggle();
+                Actions.replace('warranty')
+            }}>
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }}>
+                    Warranty
+                </Text>
+            </TouchableOpacity>
 
-                    <TouchableOpacity style={{
-                        paddingVertical: 15
-                    }}>
-                        <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold'
-                        }}>
-                            Contacts
-                        </Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={{
+                paddingVertical: 15
+            }} onPress={() => {
+                toggle();
+                Actions.replace('delivery')
+            }}>
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }}>
+                    Delivery
+                </Text>
+            </TouchableOpacity>
 
-                    <TouchableOpacity style={{
-                        marginTop: 'auto',
-                        paddingBottom: 30,
-                        flexDirection: 'row',
-                        alignItems: 'bottom'
-                    }}>
-                        <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            paddingRight: 5
-                        }}>
-                            Login
-                        </Text>
+            <TouchableOpacity style={{
+                paddingVertical: 15
+            }} onPress={() => {
+                toggle();
+                Actions.replace('contacts')
+            }}>
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                }}>
+                    Contacts
+                </Text>
+            </TouchableOpacity>
 
-                        <Image source={require('../../assets/login.png')} style={{width: 16, height: 16}}/>
-                    </TouchableOpacity>
-                </View>
+            <TouchableOpacity style={{
+                marginTop: 'auto',
+                paddingBottom: 30,
+                flexDirection: 'row',
+                alignItems: 'center'
+            }} onPress={auth ? async () => {
+                await AsyncStorage.removeItem('auth');
+                toggle();
+                Actions.replace('home');
+            } : () => {
+                toggle();
+                Actions.replace('auth');
+            }}>
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    paddingRight: 15
+                }}>
+                    {auth ? 'Logout' : 'Login'}
+                </Text>
 
-                <TouchableOpacity style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0,0,0,0.6)',
-                }}/>
-            </View>
-        );
-    }
-}
+                <Image
+                    source={auth ? require('../../assets/logout.png') : require('../../assets/enter.png')}
+                    style={{
+                        width: 20,
+                        height: 20
+                    }}
+                />
+            </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.6)',
+        }} onPress={toggle} activeOpacity={1}/>
+    </View>
+);
 
 export {Drawer};

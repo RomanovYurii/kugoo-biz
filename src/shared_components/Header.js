@@ -2,12 +2,28 @@ import React, {Component} from 'react';
 import {
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
 import {Drawer} from "./Drawer";
 import {Hamburger} from "./Hamburger";
 
 class Header extends Component {
+    state = {
+        drawer: 'none',
+        auth: false
+    }
+
+    toggleDrawer = async () => {
+        let auth = await AsyncStorage.getItem('auth');
+        auth = auth !== null;
+
+        this.setState({
+            drawer: this.state.drawer === 'none' ? 'flex' : 'none',
+            auth
+        })
+    }
+
     render() {
         return (
             <View style={{
@@ -19,9 +35,11 @@ class Header extends Component {
                 alignItems: 'center',
                 paddingHorizontal: 30
             }}>
-                <Drawer/>
+                <Drawer display={this.state.drawer} toggle={this.toggleDrawer} auth={this.state.auth}/>
 
-                <Hamburger/>
+                <TouchableOpacity onPress={this.toggleDrawer}>
+                    <Hamburger/>
+                </TouchableOpacity>
 
                 <Image
                     style={{
