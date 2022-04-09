@@ -16,7 +16,7 @@
     "expo-permissions": "~6.0.0",
     "global": "^4.4.0",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "npx": "^10.2.0",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
